@@ -96,16 +96,20 @@ def generate_index_html(endpoint):
 # Render graph for the endpoint's tagmacs.
 def generate_rssi_for_endpoint(beacon_csv):
     tags = beacon_csv['tagMac'].unique()
+    tager = []
+    ep = ['b1ee0b5e','19243e66','1fc6a334','052fb5f6','74456644','57e21042','a93b1988','a08d0c0d','22cd0394','c1f95698','2bc72bfa','3aa802b6','7a44f3f2','e54bffee','38b2611e','fea38b1e']
     for tag in tags : 
         ep_beacon = beacon_csv[beacon_csv['tagMac'] == tag]
         endPoint = ep_beacon['Endpoint'].unique()
         line_chart = pygal.Line(print_labels=True)
         line_chart.title = "tagMac: "+tag
         for i in endPoint:
-            line_chart.add(str(i[:8]),ep_beacon[ep_beacon['Endpoint'] == i]['rssi'])
-            line_chart.interpolate = 'cubic'
-            line_chart.render_to_file(tag+'.svg')
-    generate_index_html(tags)
+            if i[:8] in ep :
+                line_chart.add(str(i[:8]),ep_beacon[ep_beacon['Endpoint'] == i]['rssi'])
+                line_chart.interpolate = 'cubic'
+                line_chart.render_to_file(tag+'.svg')
+                tager.append(tag)
+    generate_index_html(tager)
 
 if __name__ == '__main__' :
 
